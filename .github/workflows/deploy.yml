@@ -1,0 +1,31 @@
+name: Deploy Compose Stack
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docker-compose.yml'
+      - '**/*.env'
+      - '**/*.yaml'
+      - '**/*.yml'
+      - 'scripts/**'
+      - '**/*.sh'
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Mark repo as safe
+        run: git config --global --add safe.directory /docker
+      - name: Pull latest repo changes
+        run: |
+          cd /docker
+          git remote set-url origin https://github.com/kenlasko/pangolin.git
+          git pull origin
+          git remote set-url origin git@github.com:kenlasko/pangolin.git
+
+      - name: Restart stack
+        run: |
+          cd /docker
+          docker compose up -d --remove-orphans
