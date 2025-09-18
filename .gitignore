@@ -1,0 +1,10 @@
+.env
+config/crowdsec/
+config/db/
+config/key
+config/letsencrypt/
+config/logs/
+config/traefik/logs/
+config/traefik/dynamic_config.yml
+
+../home/ken/.env

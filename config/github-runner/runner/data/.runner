@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "github-runner-l3QxZgSWCGTGa",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus15.actions.githubusercontent.com/UQaRVdbdNBA5MwRXv5uQYcDRDCpG66FXCTkiVlrzUNO1i6ZoeY/",
+  "gitHubUrl": "https://github.com/kenlasko/pangolin",
+  "workFolder": "/_work/github-runner-l3QxZgSWCGTGa",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}

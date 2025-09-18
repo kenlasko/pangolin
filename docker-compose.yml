@@ -1,0 +1,120 @@
+name: pangolin
+networks:
+  default:
+    driver: bridge
+    name: pangolin
+services:
+#  crowdsec:
+#    command: -t
+#    container_name: crowdsec
+#    environment:
+#      COLLECTIONS: crowdsecurity/traefik crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+#      ENROLL_INSTANCE_NAME: pangolin-crowdsec
+#      ENROLL_TAGS: docker
+#      GID: "1000"
+#      PARSERS: crowdsecurity/whitelists
+#    healthcheck:
+#      interval: 10s
+#      retries: 15
+#      test:
+#        - CMD
+#        - cscli
+#        - capi
+#        - status
+#      timeout: 10s
+#    image: crowdsecurity/crowdsec:latest
+#    labels:
+#      - traefik.enable=false
+#    ports:
+#      - 6060:6060
+#    restart: unless-stopped
+#    volumes:
+#      - ./config/crowdsec:/etc/crowdsec
+#      - ./config/crowdsec/db:/var/lib/crowdsec/data
+#      - ./config/traefik/logs:/var/log/traefik
+
+  gerbil:
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    command:
+      - --reachableAt=http://gerbil:3003
+      - --generateAndSaveKeyTo=/var/config/key
+      - --remoteConfig=http://pangolin:3001/api/v1/gerbil/get-config
+      - --reportBandwidthTo=http://pangolin:3001/api/v1/gerbil/receive-bandwidth
+    container_name: gerbil
+    depends_on:
+      pangolin:
+        condition: service_healthy
+    image: fosrl/gerbil:1.2.1
+    ports:
+      - 21820:21820/udp
+      - 51820:51820/udp
+      - 443:443
+      - 80:80
+      - 853:853
+    restart: unless-stopped
+    volumes:
+      - ./config/:/var/config
+
+  github-runner:
+    container_name: github-runner
+    image: myoung34/github-runner:2.328.0
+    environment:
+      - REPO_URL=https://github.com/kenlasko/pangolin
+      - RUNNER_TOKEN=${GITHUB_RUNNER_TOKEN}
+      - CONFIGURED_ACTIONS_RUNNER_FILES_DIR=/runner/data
+      - DISABLE_AUTOMATIC_DEREGISTRATION=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /docker:/docker
+      - ./config/github-runner/runner/data:/runner/data
+    restart: unless-stopped
+
+  pangolin:
+    container_name: pangolin
+    environment:
+    - SERVER_SECRET=${SERVER_SECRET}
+    - EMAIL_SMTP_PASS=${EMAIL_SMTP_PASS}
+    healthcheck:
+      interval: 10s
+      retries: 15
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:3001/api/v1/
+      timeout: 10s
+    image: fosrl/pangolin:1.10.0
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/config
+
+  traefik:
+    command:
+      - --configFile=/etc/traefik/traefik_config.yml
+    container_name: traefik
+    depends_on:
+#      crowdsec:
+#        condition: service_healthy
+      pangolin:
+        condition: service_healthy
+    environment:
+      CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
+    image: traefik:v3.5.2
+    network_mode: service:gerbil
+    restart: unless-stopped
+    volumes:
+      - ./config/traefik:/etc/traefik:ro
+      - ./config/letsencrypt:/letsencrypt
+      - ./config/traefik/logs:/var/log/traefik
+
+  portainer-agent:
+    container_name: portainer-agent
+    image: portainer/agent:2.34.0
+    restart: always
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
