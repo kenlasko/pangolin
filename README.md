@@ -1,7 +1,7 @@
 # Introduction
 This is the repo for my [Pangolin](https://github.com/fosrl/pangolin) self-hosted secure web services tunnel running in Docker. Any publically facing web services are proxied through Pangolin to either my [home or cloud-based Kubernetes cluster](https://github.com/kenlasko/k8s). 
 
-It is hosted on a small VPS on Oracle cloud, alongside my cloud Kubernetes cluster. 
+It is hosted on a small VPS on Oracle Cloud, in the same network with my cloud Kubernetes cluster. 
 
 # Prerequisites
 - Docker
