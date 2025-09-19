@@ -1,8 +1,7 @@
 .env
+logs
 config/crowdsec/
 config/db/
-config/github-runner/
+github-runner
 config/key
 config/letsencrypt/
-config/logs/
-config/traefik/logs/
