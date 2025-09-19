@@ -2,6 +2,6 @@
 logs
 config/crowdsec/
 config/db/
-github-runner
+github-runner/
 config/key
 config/letsencrypt/
