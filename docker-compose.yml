@@ -101,6 +101,7 @@ services:
         condition: service_healthy
     environment:
       CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
+      CROWDSEC_API_KEY: ${CROWDSEC_API_KEY}
     image: traefik:v3.5.2
     network_mode: service:gerbil
     restart: unless-stopped
