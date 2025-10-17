@@ -46,7 +46,7 @@ services:
     depends_on:
       pangolin:
         condition: service_healthy
-    image: fosrl/gerbil:1.2.1
+    image: fosrl/gerbil:1.2.2
     ports:
       - 21820:21820/udp
       - 51820:51820/udp
