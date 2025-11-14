@@ -102,7 +102,7 @@ services:
     environment:
       CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
       CROWDSEC_API_KEY: ${CROWDSEC_API_KEY}
-    image: traefik:v3.5.4
+    image: traefik:v3.6.1
     network_mode: service:gerbil
     restart: unless-stopped
     volumes:
