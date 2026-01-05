@@ -62,9 +62,6 @@ entryPoints:
 
   tcp-853:
     address: ":853/tcp"
-    http:
-      tls:
-        certResolver: letsencrypt
 
 experimental:
   plugins:

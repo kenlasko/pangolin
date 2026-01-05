@@ -92,17 +92,6 @@ http:
       tls:
         certResolver: letsencrypt
 
-    dns-router:
-      entryPoints:
-        - tcp-853
-      rule: "HostSNI(`dns.ucdialplans.com`) || HostSNI(`*.dns.ucdialplans.com`)"
-      service: api-service
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: dns.ucdialplans.com
-            sans:
-              - '*.dns.ucdialplans.com'
   services:
     api-service:
       loadBalancer:
