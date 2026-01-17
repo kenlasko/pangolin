@@ -59,7 +59,7 @@ services:
 
   github-runner:
     container_name: github-runner
-    image: myoung34/github-runner:2.330.0
+    image: myoung34/github-runner:2.331.0
     environment:
       - REPO_URL=https://github.com/kenlasko/pangolin
       - RUNNER_TOKEN=${GITHUB_RUNNER_TOKEN}
@@ -102,7 +102,7 @@ services:
     environment:
       CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
       CROWDSEC_API_KEY: ${CROWDSEC_API_KEY}
-    image: traefik:v3.6.6
+    image: traefik:v3.6.7
     network_mode: service:gerbil
     restart: unless-stopped
     volumes:
