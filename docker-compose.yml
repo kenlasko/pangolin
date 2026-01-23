@@ -71,6 +71,18 @@ services:
       - ./config/github-runner/runner/data:/runner/data
     restart: unless-stopped
 
+
+  hawser-agent:
+    container_name: hawser-agent
+    image: ghcr.io/finsys/hawser:0.2.25
+    restart: always
+    ports:
+      - 2376:2376    
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+
+      
   pangolin:
     container_name: pangolin
     environment:
@@ -110,12 +122,12 @@ services:
       - ./config/letsencrypt:/letsencrypt
       - ./config/traefik/logs:/var/log/traefik
 
-  portainer-agent:
-    container_name: portainer-agent
-    image: portainer/agent:2.37.0
-    restart: always
-    ports:
-      - 9001:9001
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/volumes:/var/lib/docker/volumes
+  # portainer-agent:
+  #   container_name: portainer-agent
+  #   image: portainer/agent:2.37.0
+  #   restart: always
+  #   ports:
+  #     - 9001:9001
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - /var/lib/docker/volumes:/var/lib/docker/volumes
