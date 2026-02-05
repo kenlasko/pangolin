@@ -74,7 +74,7 @@ services:
 
   hawser-agent:
     container_name: hawser-agent
-    image: ghcr.io/finsys/hawser:0.2.25
+    image: ghcr.io/finsys/hawser:0.2.27
     restart: always
     ports:
       - 2376:2376    
