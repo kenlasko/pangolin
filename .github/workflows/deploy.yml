@@ -18,14 +18,22 @@ jobs:
     steps:
       - name: Mark repo as safe
         run: git config --global --add safe.directory /docker
+
       - name: Pull latest repo changes
         run: |
           cd /docker
           git remote set-url origin https://github.com/kenlasko/pangolin.git
-          git pull origin
+          git pull origin main
           git remote set-url origin git@github.com:kenlasko/pangolin.git
 
-      - name: Restart stack
+      - name: Pull images
         run: |
           cd /docker
-          docker compose up -d --remove-orphans
+          services=$(docker compose config --services | grep -v github-runner | tr '\n' ' ')
+          docker compose pull --ignore-buildable $services
+
+      - name: Deploy stack
+        run: |
+          cd /docker
+          services=$(docker compose config --services | grep -v github-runner | tr '\n' ' ')
+          docker compose up -d --remove-orphans $services
