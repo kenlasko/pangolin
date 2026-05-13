@@ -58,7 +58,7 @@ http:
         - websecure
       middlewares:
         - security-headers
-      rule: Host(`pangolin.ucdialplans.com`) && PathPrefix(`/api/v1`)
+      rule: Host(`pangolin.laskonet.com`) && PathPrefix(`/api/v1`)
       service: api-service
       tls:
         certResolver: letsencrypt
@@ -67,27 +67,27 @@ http:
         - web
       middlewares:
         - redirect-to-https
-      rule: Host(`pangolin.ucdialplans.com`)
+      rule: Host(`pangolin.laskonet.com`)
       service: next-service
     next-router:
       entryPoints:
         - websecure
       middlewares:
         - security-headers
-      rule: Host(`pangolin.ucdialplans.com`) && !PathPrefix(`/api/v1`)
+      rule: Host(`pangolin.laskonet.com`) && !PathPrefix(`/api/v1`)
       service: next-service
       tls:
         certResolver: letsencrypt
         domains:
-          - main: ucdialplans.com
+          - main: laskonet.com
             sans:
-              - '*.ucdialplans.com'
+              - '*.laskonet.com'
     ws-router:
       entryPoints:
         - websecure
       middlewares:
         - security-headers
-      rule: Host(`pangolin.ucdialplans.com`)
+      rule: Host(`pangolin.laskonet.com`)
       service: api-service
       tls:
         certResolver: letsencrypt
