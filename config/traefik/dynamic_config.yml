@@ -35,10 +35,10 @@ http:
     redirect-to-https:
       redirectScheme:
         scheme: https
-    monize-demo-redirect:
+    ucdialplans-to-laskonet:
       redirectRegex:
-        regex: ^https?://monize-demo\.ucdialplans\.com(.*)
-        replacement: https://monize-demo.laskonet.com${1}
+        regex: ^https?://(.+\.)?ucdialplans\.com(.*)
+        replacement: https://${1}laskonet.com${2}
         permanent: true
     security-headers:
       headers:
@@ -96,19 +96,19 @@ http:
       service: api-service
       tls:
         certResolver: letsencrypt
-    monize-demo-redirect-http:
+    ucdialplans-redirect-http:
       entryPoints:
         - web
       middlewares:
-        - monize-demo-redirect
-      rule: Host(`monize-demo.ucdialplans.com`)
+        - ucdialplans-to-laskonet
+      rule: HostRegexp(`^(.+\.)?ucdialplans\.com$`)
       service: next-service
-    monize-demo-redirect-https:
+    ucdialplans-redirect-https:
       entryPoints:
         - websecure
       middlewares:
-        - monize-demo-redirect
-      rule: Host(`monize-demo.ucdialplans.com`)
+        - ucdialplans-to-laskonet
+      rule: HostRegexp(`^(.+\.)?ucdialplans\.com$`)
       service: next-service
       tls:
         certResolver: letsencrypt
